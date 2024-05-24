@@ -8,9 +8,12 @@ import '../models/meal.dart';
 class MealItem extends StatelessWidget{
   const MealItem ({
     super.key,
-    required this.meal
+    required this.meal,
+    required this.onSelectMeal
 });
   final Meal meal;
+
+  final void Function(Meal meal) onSelectMeal;
 
   String get complexityText{
     return meal.complexity.name[0].toUpperCase() + meal.complexity.name.substring(1);
@@ -29,7 +32,9 @@ class MealItem extends StatelessWidget{
       ),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-        onTap: (){},
+        onTap: (){
+          onSelectMeal(meal);
+        },
         child: Stack(
           children: [
             FadeInImage(placeholder: MemoryImage(kTransparentImage), image: NetworkImage(meal.imageUrl),
@@ -57,13 +62,14 @@ class MealItem extends StatelessWidget{
                         height: 12,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           MealItemTrait(icon: Icons.schedule, label: '${meal.duration} min'),
 
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           MealItemTrait(icon: Icons.work, label: complexityText),
 
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 10),
                           MealItemTrait(icon: Icons.attach_money, label: affordableText),
                         ],
                       )
